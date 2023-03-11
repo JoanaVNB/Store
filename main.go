@@ -6,7 +6,6 @@ import(
 	"BE-JoanaVidon/order-api/controllers"
 	"BE-JoanaVidon/user-api/repository/database"
 	"BE-JoanaVidon/user-api/service"
-	"BE-JoanaVidon/user-api/domain"
 	"BE-JoanaVidon/user-api/handlers"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
@@ -15,15 +14,12 @@ import(
 )
 
 func main(){
-	dsn := "root:secret@(db)/mysql?charset=utf8mb4&parseTime=True&loc=Local"
-	DB, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	dns := "adm:Pass123!@/store?charset=utf8mb4&parseTime=True&loc=Local"
+	DB, err := gorm.Open(mysql.Open(dns))
 	if err != nil {
 			log.Panic("failed to connect to database")
 	}
 	
-	DB.AutoMigrate(&domain.User{})
-
-
 	mySQLrepository := database.NewRepository(DB, err)
 
 	createUC := service.NewCreateUseCase(mySQLrepository)
