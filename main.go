@@ -1,28 +1,26 @@
 package main
 
-import(
-	"BE-JoanaVidon/order-api/usecase"
-	"BE-JoanaVidon/order-api/repository"
+import (
 	"BE-JoanaVidon/order-api/controllers"
-	"BE-JoanaVidon/user-api/repository/database"
-	"BE-JoanaVidon/user-api/service"
-	"BE-JoanaVidon/user-api/domain"
+	"BE-JoanaVidon/order-api/repository"
+	"BE-JoanaVidon/order-api/usecase"
 	"BE-JoanaVidon/user-api/handlers"
+	"BE-JoanaVidon/user-api/repository/database"
+	"BE-JoanaVidon/user-api/repository/elasticSearch"
+	"BE-JoanaVidon/user-api/service"
+	"context"
+	"log"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"log"
 )
 
 func main(){
-	dsn := "root:secret@(db)/mysql?charset=utf8mb4&parseTime=True&loc=Local"
-	DB, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	dns := "adm:Pass123!@/store?charset=utf8mb4&parseTime=True&loc=Local"
+	DB, err := gorm.Open(mysql.Open(dns))
 	if err != nil {
 			log.Panic("failed to connect to database")
 	}
-	
-	DB.AutoMigrate(&domain.User{})
-
 
 	mySQLrepository := database.NewRepository(DB, err)
 
@@ -41,6 +39,21 @@ func main(){
 	deleteUC := service.NewDeleteUseCase(mySQLrepository)
 	deleteHandler := handlers.NewDeleteHandler(deleteUC)
 	
+//Elastic Search
+	ctx := context.Background()
+
+	ctx = elasticSearch.LoadUsersFromFile(ctx)
+	ctx = elasticSearch.ConnectionWithElasticSearch(ctx)
+	elasticSearch.IndexUsersAsDocuments(ctx)
+	elasticSearch.QueryUserByDocumentID(ctx)
+
+
+// 	ESRepository := elasticSearch.NewElasticSearch(newClient)
+
+// 	createUCElastic := service.NewCreateUseCase(ESRepository)
+// 	createHandlerElastic := handlers.NewCreateHandler(createUCElastic)
+
+
 	//Conectando ao Gin
 	r := gin.Default()
 

@@ -2,15 +2,27 @@ package presenter
 
 import (
 	"BE-JoanaVidon/user-api/domain"
+	"time"
 )
 
 type PresentUser struct {
-	ID string `json:"id,omitempty"`
-	Name string `json:"name,omitempty"`
-	CPF string `json:"cpf,omitempty"`
-	Email string `json:"email,omitempty"`
-	PhoneNumber string `json:"phone_number,omitempty"`
+	ID string `json:"id"`
+	Name string `json:"name"`
+	CPF string `json:"cpf"`
+	Email string `json:"email"`
+	PhoneNumber string `json:"phone_number"`
 }
+
+type GetUser struct {
+	ID string `json:"id"`
+	Name string `json:"name"`
+	CPF string `json:"cpf"`
+	Email string `json:"email"`
+	PhoneNumber string `json:"phone_number"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"` 
+}
+
 
 func PresenterUser(u domain.User) *PresentUser{
 	return &PresentUser{
