@@ -44,7 +44,7 @@ func QueryUserByDocumentID(ctx context.Context) {
 	type GetUser struct {
 		Index string `json:"_index"`
 		Type string `json:"_type"`
-		ID          string `json:"_id"`
+		ID   string `json:"_id"`
 		Version int  `json:"_version"`
 		Seq int `json:"_seq_no"`
 		Term int `json:"_primary_term"`

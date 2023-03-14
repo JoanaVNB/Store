@@ -4,11 +4,11 @@ import (
 	"BE-JoanaVidon/user-api/domain"
 )
 
-type InMemoShopRepository struct{
+type InMemoRepository struct{
 	uMap	map[string]domain.User
 }
 
-func NewInMemoShopRepository() *InMemoShopRepository{
-	return &InMemoShopRepository{uMap: make(map[string]domain.User)}
+func NewInMemoRepository() *InMemoRepository{
+	return &InMemoRepository{
+		uMap: make(map[string]domain.User)}
 }
-

@@ -4,7 +4,7 @@ import (
 	"BE-JoanaVidon/user-api/domain"
 )
 
-func (in InMemoShopRepository) GetAll([]domain.User) ([]domain.User, error){
+func (in InMemoRepository) GetAll([]domain.User) ([]domain.User, error){
 	var users []domain.User
 	for _, k := range in.uMap{
 		user := k

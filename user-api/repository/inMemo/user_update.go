@@ -5,7 +5,7 @@ import (
 	"errors"
 )
 
-func (in InMemoShopRepository) Update(id string, phone string, u domain.User) (domain.User, error){
+func (in InMemoRepository) Update(id string, phone string, u domain.User) (domain.User, error){
 	if _, ok := in.uMap[id]; ok {
 		in.uMap[id] = u
 		u.PhoneNumber = phone
