@@ -9,19 +9,19 @@ import (
 
 func TestDeleteUseCase_Execute(t *testing.T) {
 
-	t.Run("Success repository", func(t *testing.T) {
-		controller := gomock.NewController(t)
-		defer controller.Finish()
+	controller := gomock.NewController(t)
+	defer controller.Finish()
 
 		mockRepository := service.NewMockDeleteRepository(controller)
+
 		mockRepository.
 			EXPECT().
-			Delete(gomock.Any()).
+			Delete("1").
 			Return(nil)
-
-		uc := service.NewDeleteUseCase(mockRepository)
-		err := uc.Execute("1")
+	
+		service := service.NewDeleteUseCase(mockRepository)
+	
+		err := service.Execute("1")	
 
 		assert.Nil(t, err)
-})
-}
+	}

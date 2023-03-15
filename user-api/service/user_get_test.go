@@ -10,25 +10,27 @@ import (
 
 func TestGetUseCase_Execute(t *testing.T) {
 
-	t.Run("Success repository", func(t *testing.T) {
-		controller := gomock.NewController(t)
-		defer controller.Finish()
-//Execute(string, domain.User) (domain.User, error)
+	controller := gomock.NewController(t)
+	defer controller.Finish()
+
 		mockRepository := service.NewMockGetRepository(controller)
+
+		userMock := domain.User{
+			Name:        "some name",
+			CPF:         "some cpf",
+			Email:       "some@gmail.com",
+			PhoneNumber: "some phone",
+		}
+
 		mockRepository.
 			EXPECT().
-			Get(gomock.Any(), gomock.Any()).
-			Return(domain.User{
-				ID:						"1",
-				Name:        "Joana Vidon",
-				CPF:         "112.625.xxx-xx",
-				Email:       "joanavidon@gmail.com",
-				PhoneNumber: "(21)98108-xxxx",
-			}, nil)
+			Get("1", domain.User{}).
+			Return(userMock, nil)
+	
+		service := service.NewGetUseCase(mockRepository)
+	
+		user, err := service.Execute("1",domain.User{})	
 
-		uc := service.NewGetUseCase(mockRepository)
-		_, err := uc.Execute("1", domain.User{})
-
+		assert.EqualValues(t, userMock, user)
 		assert.Nil(t, err)
-})
-}
+	}

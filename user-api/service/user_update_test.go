@@ -10,30 +10,27 @@ import (
 
 func TestUpdateUseCase_Execute(t *testing.T) {
 
-	t.Run("Success repository", func(t *testing.T) {
-		controller := gomock.NewController(t)
-		defer controller.Finish()
+	controller := gomock.NewController(t)
+	defer controller.Finish()
 
 		mockRepository := service.NewMockUpdateRepository(controller)
+
+		userMock := domain.User{
+			Name:        "some name",
+			CPF:         "some cpf",
+			Email:       "some@gmail.com",
+			PhoneNumber: "2721-4762",
+		}
+
 		mockRepository.
 			EXPECT().
-			Update(gomock.Any(), gomock.Any(), gomock.Any()).
-			Return(domain.User{
-				ID:						"1",
-				Name:        "Joana Vidon",
-				CPF:         "112.625.xxx-xx",
-				Email:       "joanavidon@gmail.com",
-				PhoneNumber: "(21)5555-xxxx",
-			}, nil)
+			Update("1", "2721-4762", domain.User{}).
+			Return(userMock, nil)
+	
+		service := service.NewUpdateUseCase(mockRepository)
+	
+		user, err := service.Execute("1", "2721-4762", domain.User{})	
 
-		uc := service.NewUpdateUseCase(mockRepository)
-		_, err := uc.Execute("1", "(21)5555-xxxx", domain.User{
-			Name:        "Joana Bloise",
-			CPF:         "112.625.xxx-xx",
-			Email:       "joanavidon@gmail.com",
-			PhoneNumber: "(21)98108-xxxx",
-		})
-
+		assert.EqualValues(t, userMock, user)
 		assert.Nil(t, err)
-})
-}
+	}

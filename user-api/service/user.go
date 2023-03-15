@@ -1,24 +1,10 @@
 package service
 
-type UserUC struct {
-	createUC CreateUseCase
-	getUC GetUseCase
-	getAllUC GetAllUseCase
-	updateUC UpdateUseCase
-	deleteUC DeleteUseCase
-}
+import domain "BE-JoanaVidon/user-api/domain"
 
-func NewUserUC (
-	createUC CreateUseCase,
-	getUC GetUseCase,
-	getAllUC GetAllUseCase,
-	updateUC UpdateUseCase,
-	deleteUC DeleteUseCase) *UserUC{
-		return &UserUC{
-			createUC: createUC,
-			getUC:    getUC,
-			getAllUC: getAllUC,
-			updateUC: updateUC,
-			deleteUC: deleteUC,
-		}
+func Validate(u domain.User) bool{
+	if (u.Name == "" || u.CPF == "" || u.Email == "" || u.PhoneNumber == ""){
+		return false
 	}
+	return true
+}
