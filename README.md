@@ -28,7 +28,7 @@ Aplicação para cadastro de usuários e seus pedidos.
 ## Links
 Abaixo seguem meus links com explicação do código ou de estudo:
 * [Explicação dos testes, citando a função Create](https://joanavidon.notion.site/Elastic-Search-a6443921416f4b558dc267abb76fc675)
-* * Resumos:
+* Resumos:
 * [Elastic Seach - conteúdo para estudo](https://www.notion.so/joanavidon/Testes-92702c53edb34fcca788be34eed89a4f)
 * [Gorm e Gin](https://app.diagrams.net/#G180mv-hWo-ncgnk3HMDbdmZFh9T1uzAKN)
 * [MySQL](https://joanavidon.notion.site/MySQL-e5e2e66d42ff4d03acb5089dc3c3df17)
