@@ -2,7 +2,7 @@
 Aplicação para cadastro de usuários e seus pedidos.
 * Use o comando `docker-compose up -d`. Após os containers estarem de pé, execute a aplicação com o comando: `go run main.go`.
 * Para testar: vá até o diretório que deseja testar e use o comando: `go test` ou `go test -v`para o modo verboso.
-* Para acessar o Kibana: acesse localhost:5601 
+* Para acessar o Kibana: acesse `elasticsearch:5601`.
 
 ## v1
 * ✅ API Rest: Gin-Gonic;
