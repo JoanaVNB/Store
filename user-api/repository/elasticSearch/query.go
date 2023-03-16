@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"log"
 	"time"
+	"fmt"
 	"github.com/elastic/go-elasticsearch/v8"
 )
 
@@ -17,11 +18,16 @@ func QueryUsersByEmail(ctx context.Context, email string) {
 	var buf bytes.Buffer
 	query := map[string]interface{}{
 			"query": map[string]interface{}{
-					"match": map[string]interface{}{
-							"email": email,
+				"bool": map[string]interface{}{
+					"must": map[string]interface{}{
+							"term": map[string]string{
+								"email.keyword": email,
+						},
 					},
 			},
-	}
+	},
+}
+
 	if err := json.NewEncoder(&buf).Encode(query); err != nil {
 			log.Fatalf("Error encoding query: %s", err)
 	}
@@ -39,7 +45,7 @@ func QueryUsersByEmail(ctx context.Context, email string) {
 
 	defer func() {
 			if response.Body != nil {
-					_ = response.Body.Close()
+				_ = response.Body.Close()
 			}
 	}()
 
@@ -51,7 +57,7 @@ func QueryUsersByEmail(ctx context.Context, email string) {
 	if err != nil {
 			log.Fatalf("Error reading response: %s", err)
 	}
-	
+		
 	type hits struct{
 		Index string `json:"_index"`
 		Type string `json:"_type"`
@@ -73,7 +79,6 @@ func QueryUsersByEmail(ctx context.Context, email string) {
     } `json:"hits"`
 }
 
-
 	var searchRes searchResult
 
 		err = json.Unmarshal(responseBytes, &searchRes)
@@ -81,7 +86,11 @@ func QueryUsersByEmail(ctx context.Context, email string) {
     log.Fatalf("Error decoding response: %s", err)
 }
 
-	for _, hit := range searchRes.Hits.Hits {
-			log.Printf("User with email %s found: ID %s", email, hit.ID)
+	var userID string
+	if searchRes.Hits.Total.Value > 0 {
+		for _, id := range searchRes.Hits.Hits{
+			userID = id.Source.ID
+		}
+		fmt.Printf("✅ User with email %s is the ID: %s\n\n", email, userID)
 	}
 }

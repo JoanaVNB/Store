@@ -53,8 +53,8 @@ func main(){
 	ctx = elasticSearch.LoadUsersFromFile(ctx)
 	ctx = elasticSearch.ConnectionWithElasticSearch(ctx)
 	elasticSearch.IndexUsersAsDocuments(ctx)
-	elasticSearch.QueryUserByDocumentID(ctx)
-	elasticSearch.QueryUsersByEmail(ctx, "unique@gmail.com")
+	elasticSearch.QueryUserByDocumentID(ctx, "5")
+	elasticSearch.QueryUsersByEmail(ctx, "joanavidon@gmail.com")
 
 	r := gin.Default()
 

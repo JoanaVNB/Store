@@ -14,11 +14,11 @@ import (
 
 //GET /users/_doc/1/_source?_source_includes=name
 
-func QueryUserByDocumentID(ctx context.Context) {
+func QueryUserByDocumentID(ctx context.Context, id string) {
 
 	client := ctx.Value(ClientKey).(*elasticsearch.Client)
 
-	documentID := "1"
+	documentID := id
 	
 	response, err := client.Get("users", documentID)
 	if err != nil {
