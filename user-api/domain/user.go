@@ -1,17 +1,19 @@
 package domain
 
-/* type User struct{
-	ID string 
-	Name string `gorm:"not null" binding:"required"`
-	CPF string `gorm:"not null" binding:"required"`
-	Email string `gorm:"not null" binding:"required,email"`
-	PhoneNumber string `json:"phone_number"`
-} */
+import(
+	"time"
+)
 
 type User struct{
-	ID string `json:"id"`
-	Name string `json:"name" binding:"required"`
-	CPF string `json:"cpf" binding:"required"`
-	Email string `json:"email" binding:"required,email"`
-	PhoneNumber string `json:"phone_number"`
+	ID string `json:"id" gorm:"varchar(150); not null"`
+	Name string `json:"name" binding:"required" gorm:"varchar(150); not null"`
+	CPF string `json:"cpf" binding:"required" gorm:"varchar(150); not null; unique"`
+	Email string `json:"email" binding:"required,email" gorm:"varchar(150); not null; unique"`
+	PhoneNumber string `json:"phone_number" gorm:"varchar(18); not null; unique"`
+	CreatedAt time.Time `json:"created_at" gorm:"default current_timestamp()"`
+	UpdatedAt time.Time `json:"updated_at" gorm:"default current_timestamp()"`
+}
+
+func (User) TableName() string{
+	return "user"
 }

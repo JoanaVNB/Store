@@ -1,24 +1,55 @@
 version: '3.0'
 
 services:
+  db:
+    image: mysql:8.0
+    container_name: db
+    volumes:
+      - todo-mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_HOST: db
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: store
+    networks:
+      - BE-JoanaVidon
+    ports:
+      - 3306:3306
+
+  app:
+    build: Dockerfile
+    image: golang
+    container_name: app
+    ports:
+      - 5000:5000
+    restart: always
+    environment:
+      MYSQL_HOST: db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: secret
+      MYSQL_DB: store
+    depends_on:
+      - db
+    networks:
+      - BE-JoanaVidon
+    
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.14.0
     container_name: elasticsearch
     environment:
-    - bootstrap.memory_lock=true
-    - ES_JAVA_OPTS=-Xms1g -Xmx1g
-    - discovery.type=single-node
-    - node.name=lonely-gopher
-    - cluster.name=store
+      - bootstrap.memory_lock=true
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+      - discovery.type=single-node
+      - node.name=lonely-gopher
+      - cluster.name=store
     ulimits:
       memlock:
         hard: -1
         soft: -1
     ports:
-    - 9200:9200
+      - 9200:9200
     networks:
-    - BE-JoanaVidon
+      - BE-JoanaVidon
     healthcheck:
       interval: 10s
       retries: 20
@@ -34,14 +65,18 @@ services:
       ELASTICSEARCH_URL: http://elasticsearch:9200
       ELASTICSEARCH_HOSTS: http://elasticsearch:9200
     ports:
-    - 5601:5601
+      - 5601:5601
     networks:
-    - BE-JoanaVidon
+      - BE-JoanaVidon
     healthcheck:
       interval: 10s
       retries: 20
       test: curl --write-out 'HTTP %{http_code}' --fail --silent --output /dev/null http://localhost:5601/api/status
 
+volumes:
+  todo-mysql-data:
+
 networks:
   BE-JoanaVidon:
     driver: bridge
+    name: store_BE-JoanaVidon
