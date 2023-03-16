@@ -64,13 +64,14 @@ func TestCreateUseCase_Execute(t *testing.T) {
 					mockRepository.
 						EXPECT().
 						Execute(domain.User{
+							ID:						"1",
 							Name:        "some name",
 							CPF:         "somecpf",
 							Email:       "some@gmail.com",
 							PhoneNumber: "somenumber",
 						}).
 						Return(domain.User{
-							ID:						"",
+							ID:						"1",
 							Name:        "some name",
 							CPF:         "somecpf",
 							Email:       "some@gmail.com",
@@ -83,6 +84,7 @@ func TestCreateUseCase_Execute(t *testing.T) {
 			args: args{
 				requestBody: func() io.Reader {
 					raw, _ := json.Marshal(presenter.PresentUser{
+					ID:							"1",
 						Name:        "some name",
 						CPF:         "somecpf",
 						Email:       "some@gmail.com",
@@ -93,7 +95,7 @@ func TestCreateUseCase_Execute(t *testing.T) {
 				},
 			},
 			wantStatusCode: 201,
-			wantBody:       `{"id":"","name":"some name","cpf":"somecpf","email":"some@gmail.com","phone_number":"somenumber"}`,
+			wantBody:       `{"id":"1","name":"some name","cpf":"somecpf","email":"some@gmail.com","phone_number":"somenumber"}`,
 		},
 	}
 	for _, tt := range tests {

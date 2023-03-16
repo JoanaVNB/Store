@@ -1,6 +1,5 @@
 package handlers
 
-//go:generate mockgen -source=$GOFILE -destination=mock_$GOFILE -package=$GOPACKAGE
 import (
 	"BE-JoanaVidon/user-api/domain"
 	"BE-JoanaVidon/user-api/presenter"

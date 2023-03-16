@@ -5,7 +5,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"time"
@@ -52,33 +51,37 @@ func QueryUsersByEmail(ctx context.Context, email string) {
 	if err != nil {
 			log.Fatalf("Error reading response: %s", err)
 	}
-	fmt.Printf("Response: %s\n", responseBytes)
-
+	
 	type hits struct{
 		Index string `json:"_index"`
 		Type string `json:"_type"`
 		ID   string `json:"_id"`
-		Score int  `json:"_score"`
+		Score float32  `json:"_score"`
 		Source *presenter.GetUser `json:"_source"`
 		CreatedAt time.Time `json:"_created_at"`
 		UpdatedAt time.Time `json:"_updated_at"`
 	}
 
-	type hit struct{
-		Hits hits `json:"hits"`
-	}
+	type searchResult struct {
+    Hits struct {
+        Total struct {
+            Value    int    `json:"value"`
+            Relation string `json:"relation"`
+        } `json:"total"`
+        MaxScore float64 `json:"max_score"`
+        Hits     []hits  `json:"hits"`
+    } `json:"hits"`
+}
 
-	type searchResult struct{
-		Hit hit
-		Hits []hits `json:"hits"`
-	}
 
 	var searchRes searchResult
-	if err := json.NewDecoder(response.Body).Decode(&searchRes); err != nil {
-			log.Fatalf("Error decoding search result: %s", err)
-	}
 
-	for _, hit := range searchRes.Hits {
+		err = json.Unmarshal(responseBytes, &searchRes)
+	if err != nil {
+    log.Fatalf("Error decoding response: %s", err)
+}
+
+	for _, hit := range searchRes.Hits.Hits {
 			log.Printf("User with email %s found: ID %s", email, hit.ID)
 	}
 }

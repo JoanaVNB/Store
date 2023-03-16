@@ -6,9 +6,9 @@ import (
 	"BE-JoanaVidon/order-api/usecase"
 	"BE-JoanaVidon/user-api/handlers"
 	"BE-JoanaVidon/user-api/repository/database"
-	//"BE-JoanaVidon/user-api/repository/elasticSearch"
+	"BE-JoanaVidon/user-api/repository/elasticSearch"
 	"BE-JoanaVidon/user-api/service"
-	//"context"
+	"context"
 	"log"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
@@ -40,13 +40,13 @@ func main(){
 	deleteHandler := handlers.NewDeleteHandler(deleteUC)
 	
 //Elastic Search
-/* 	ctx := context.Background()
+	ctx := context.Background()
 
 	ctx = elasticSearch.LoadUsersFromFile(ctx)
 	ctx = elasticSearch.ConnectionWithElasticSearch(ctx)
 	elasticSearch.IndexUsersAsDocuments(ctx)
 	elasticSearch.QueryUserByDocumentID(ctx)
-	elasticSearch.QueryUsersByEmail(ctx, "joanavidon@gmail.com") */
+	elasticSearch.QueryUsersByEmail(ctx, "joanavidon@gmail.com")
 
 
 // 	ESRepository := elasticSearch.NewElasticSearch(newClient)

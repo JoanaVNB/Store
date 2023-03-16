@@ -28,12 +28,12 @@ func NewCreateUseCase (createRepo CreateRepository) *createRepository{
 
 func (c createRepository) Execute(u domain.User) (domain.User, error){
 	if !Validate(u){
-		return domain.User{}, fmt.Errorf("empty field")
+		return domain.User{}, fmt.Errorf("some empty field")
 	}
 	u.ID = uuid.NewString()
-	_, err := c.createRepo.Create(u)
+	user, err := c.createRepo.Create(u)
 	if err != nil{
 		return domain.User{}, err
 	}
-	return u, nil
+	return user, nil
 }

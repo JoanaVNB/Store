@@ -35,7 +35,7 @@ func NewUpdateHandler (repository UpdateHandler) *updateHandler{
 // @Failure 409 {object} presenter.GetErrorMsg
 // @Failure 412 {object} presenter.GetErrorMsg
 // @Failure 500 {object} presenter.GetErrorMsg
-// @Router /users/:id [put]
+// @Router /users/:id/:phone [put]
 func (up updateHandler) Update(c *gin.Context) {
 	var u domain.User
 	var ve validator.ValidationErrors
